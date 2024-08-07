@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+</head>
+<body>
+    <h1>Student Details Form</h1>
+    <form id="studentForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+        <label for="grade">Grade:</label>
+        <input type="text" id="grade" name="grade" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Student List</h2>
+    <ul id="studentList"></ul>
+
+    <script>
+        document.getElementById('studentForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const grade = document.getElementById('grade').value;
+
+            const response = await fetch('/api/students', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, age, grade })
+            });
+
+            const student = await response.json();
+            appendStudentToList(student);
+        });
+
+        async function loadStudents() {
+            const response = await fetch('/api/students');
+            const students = await response.json();
+            students.forEach(student => appendStudentToList(student));
+        }
+
+        function appendStudentToList(student) {
+            const studentList = document.getElementById('studentList');
+            const li = document.createElement('li');
+            li.textContent = `${student.name} (Age: ${student.age}, Grade: ${student.grade})`;
+            studentList.appendChild(li);
+        }
+
+        loadStudents();
+    </script>
+</body>
+</html>
