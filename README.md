@@ -58,10 +58,9 @@ const db = mysql.createConnection({
 
 ### Step 3: Install Dependencies
 Install the required Node.js packages using:
-
-
 npm install
-Step 4: Run the Server
+
+### Step 4: Run the Server
 Start the server with the following command:
 
 node server.js
